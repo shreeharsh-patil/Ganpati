@@ -91,8 +91,11 @@ function normalizePandal(pandal) {
   };
 }
 
+const basePandals = [...regionalPandals, ...pandals].map(normalizePandal);
+const baseModakStops = [...modakStops, ...regionalModakStops];
+
 function allModakStops() {
-  return [...modakStops, ...regionalModakStops];
+  return baseModakStops;
 }
 
 const state = {
@@ -107,7 +110,9 @@ const state = {
   modakMarkers: new Map(),
   map: null,
   userMarker: null,
-  toastTimer: null
+  toastTimer: null,
+  searchTimer: null,
+  renderFrame: null
 };
 
 const statusLabel = { confirmed: "Confirmed 2026", check: "Needs checking", historic: "Last seen 2023" };
@@ -119,7 +124,37 @@ function escapeHTML(value = "") {
 }
 
 function allPandals() {
-  return [...state.customPandals, ...regionalPandals, ...pandals].map(normalizePandal);
+  if (!state.customPandals.length) return basePandals;
+  return [...state.customPandals.map(normalizePandal), ...basePandals];
+}
+
+function parsePandalId(raw) {
+  const number = Number(raw);
+  return Number.isNaN(number) ? raw : number;
+}
+
+function scheduleDirectoryUpdate(syncMap = false) {
+  if (state.renderFrame) cancelAnimationFrame(state.renderFrame);
+  state.renderFrame = requestAnimationFrame(() => {
+    state.renderFrame = null;
+    renderPandals();
+    if (syncMap) syncMapMarkers();
+  });
+}
+
+function scheduleSearchUpdate(value) {
+  state.query = value;
+  clearTimeout(state.searchTimer);
+  state.searchTimer = setTimeout(() => scheduleDirectoryUpdate(true), 110);
+}
+
+function updateRouteButtons() {
+  const routeIds = new Set(state.route.map(String));
+  $("#pandalGrid [data-route-id]").forEach(button => {
+    const active = routeIds.has(String(button.dataset.routeId));
+    button.classList.toggle("active", active);
+    button.textContent = active ? "Added ✓" : "+ Route";
+  });
 }
 
 function distanceKm(a, b) {
@@ -144,16 +179,28 @@ function pinIcon(type = "pandal") {
 }
 
 function initMap() {
+  if (state.map) return;
   const mapStatus = $("#mapStatus");
   if (!window.L) {
     mapStatus.textContent = "Map library could not load. The pandal directory still works below.";
     return;
   }
 
-  state.map = L.map("map", { scrollWheelZoom: false, zoomControl: false }).setView([16.5, 74.3], 6);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  state.map = L.map("map", {
+    scrollWheelZoom: false,
+    zoomControl: false,
+    preferCanvas: true,
+    zoomAnimation: !reducedMotion,
+    fadeAnimation: !reducedMotion,
+    markerZoomAnimation: !reducedMotion
+  }).setView([16.5, 74.3], 6);
   L.control.zoom({ position: "bottomright" }).addTo(state.map);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 2,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(state.map);
 
@@ -161,6 +208,29 @@ function initMap() {
   allModakStops().forEach(addModakMarker);
   mapStatus.textContent = `${allPandals().length} pandals · Goa, Karnataka & Maharashtra`;
   syncMapMarkers();
+
+  if (state.userLocation) {
+    state.userMarker = L.marker([state.userLocation.lat, state.userLocation.lng], { icon: pinIcon("user") })
+      .addTo(state.map)
+      .bindPopup("You are here");
+  }
+}
+
+function initMapWhenNeeded() {
+  const atlas = $("#atlas");
+  if (!atlas || !("IntersectionObserver" in window)) {
+    initMap();
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) {
+      initMap();
+      observer.disconnect();
+    }
+  }, { rootMargin: "700px 0px" });
+
+  observer.observe(atlas);
 }
 
 function addPandalMarker(pandal) {
@@ -276,7 +346,7 @@ function toggleRoute(id) {
     state.route.push(id);
   }
   renderRoute();
-  renderPandals();
+  updateRouteButtons();
 }
 
 function openRoute() {
@@ -415,9 +485,7 @@ function syncMapMarkers(fit = false) {
 
 function bindEvents() {
   $("#pandalSearch").addEventListener("input", event => {
-    state.query = event.target.value;
-    renderPandals();
-    syncMapMarkers();
+    scheduleSearchUpdate(event.target.value);
   });
   $("#filterPills").addEventListener("click", event => {
     const button = event.target.closest("[data-filter]");
@@ -430,17 +498,20 @@ function bindEvents() {
   $("#pandalGrid").addEventListener("click", event => {
     const mapButton = event.target.closest("[data-map-id]");
     const routeButton = event.target.closest("[data-route-id]");
-    if (mapButton) highlightPandal(Number.isNaN(Number(mapButton.dataset.mapId)) ? mapButton.dataset.mapId : Number(mapButton.dataset.mapId));
-    if (routeButton) toggleRoute(Number.isNaN(Number(routeButton.dataset.routeId)) ? routeButton.dataset.routeId : Number(routeButton.dataset.routeId));
+    if (mapButton) highlightPandal(parsePandalId(mapButton.dataset.mapId));
+    if (routeButton) toggleRoute(parsePandalId(routeButton.dataset.routeId));
   });
   $("#routeList").addEventListener("click", event => {
     const remove = event.target.closest("[data-remove-route]");
     if (!remove) return;
-    const raw = remove.dataset.removeRoute;
-    toggleRoute(Number.isNaN(Number(raw)) ? raw : Number(raw));
+    toggleRoute(parsePandalId(remove.dataset.removeRoute));
   });
   $("#openRouteButton").addEventListener("click", openRoute);
-  $("#clearRouteButton").addEventListener("click", () => { state.route = []; renderRoute(); renderPandals(); });
+  $("#clearRouteButton").addEventListener("click", () => {
+    state.route = [];
+    renderRoute();
+    updateRouteButtons();
+  });
   $$('[data-action="locate"]').forEach(button => button.addEventListener("click", locateUser));
   $("#modakList").addEventListener("click", event => {
     const button = event.target.closest("[data-modak-id]");
@@ -507,7 +578,7 @@ function init() {
   renderPandals();
   renderRoute();
   renderModak();
-  initMap();
+  initMapWhenNeeded();
   bindEvents();
   initReveal();
 }
