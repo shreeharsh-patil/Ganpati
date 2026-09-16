@@ -1,12 +1,14 @@
 # Aamche Bappa — Ganpati Pandal Atlas
 
-A responsive Mumbai Ganesh Utsav guide inspired by the provided Ganpati Pandal Atlas reference.
+A responsive Ganesh Utsav guide for Goa, Karnataka and Maharashtra, inspired by the provided Ganpati Pandal Atlas reference.
 
 ## What is included
 
 - Editorial Ganpati festival landing page with Marathi + English typography
 - Interactive Leaflet/OpenStreetMap atlas
-- Pandal directory with 70 entries and status filters
+- Multi-state pandal directory spanning Goa, Karnataka and Maharashtra
+- State and city filters that stay synchronized with the map
+- Original Mumbai dataset plus Pune, Bengaluru, Belagavi, Mangaluru, Hubballi and Goa coverage seeds
 - Browser geolocation and distance sorting
 - Multi-stop darshan route planner with Google Maps hand-off
 - Separate modak-stop layer
@@ -24,7 +26,7 @@ Then open `http://localhost:4173`.
 
 ## Data note
 
-Locations and timings are planning references and may be approximate. Festival conditions, timings, traffic diversions, and queue rules can change quickly. Verify important details with the mandal or local authorities before travelling.
+Locations and timings are planning references and may be approximate. Regional entries marked “Needs checking” are intentionally not presented as confirmed 2026 schedules. Festival conditions, timings, traffic diversions, and queue rules can change quickly. Verify important details with the mandal or local authorities before travelling.
 
 ## Next production step
 
