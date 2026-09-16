@@ -14,11 +14,14 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check app.js
+        run: |
+          node --check regional-data.js
+          node --check app.js
       - name: Check required files
         run: |
           test -s index.html
           test -s styles.css
           test -s app.js
+          test -s regional-data.js
           test -s assets/ganpati-mark.svg
           test -s assets/hero-ganpati.svg
