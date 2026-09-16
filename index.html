@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4a0e19" />
-  <meta name="description" content="Aamche Bappa — a Ganpati pandal atlas for Mumbai. Discover pandals, check aarti timings, find modak stops and plan your darshan route." />
+  <meta name="description" content="Aamche Bappa — a Ganpati pandal atlas for Goa, Karnataka and Maharashtra. Discover pandals, check aarti timings, find modak stops and plan your darshan route." />
   <meta property="og:title" content="Aamche Bappa | Ganpati Pandal Atlas" />
   <meta property="og:description" content="Find every pandal. Miss no aarti." />
   <meta property="og:type" content="website" />
@@ -27,7 +27,7 @@
         </span>
         <span>
           <strong>Aamche Bappa</strong>
-          <small>Mumbai · Ganesh Utsav</small>
+          <small>Goa · Karnataka · Maharashtra</small>
         </span>
       </a>
 
@@ -63,9 +63,9 @@
       <div class="shell hero-grid">
         <div class="hero-copy reveal">
           <p class="eyebrow devanagari">गणपती बाप्पा मोरया</p>
-          <span class="year-pill">Mumbai · 2026</span>
+          <span class="year-pill">Goa · Karnataka · Maharashtra · 2026</span>
           <h1>Find every pandal.<br /><em>Miss no aarti.</em></h1>
-          <p class="hero-lede">Explore trusted pandal locations, compare visiting times, and plan a route through Mumbai.</p>
+          <p class="hero-lede">Explore trusted Ganpati locations across Goa, Karnataka and Maharashtra, compare visiting times, and plan a darshan route that works from your city.</p>
           <div class="hero-actions">
             <a class="button button-saffron" href="#atlas">Explore the map <span aria-hidden="true">↗</span></a>
             <button class="button button-ghost" type="button" data-action="locate">Pandals near me</button>
@@ -126,10 +126,10 @@
     <section class="section atlas-section" id="atlas">
       <div class="shell">
         <div class="section-heading light reveal">
-          <p class="section-index">02 · Explore Mumbai</p>
+          <p class="section-index">02 · Explore Western India</p>
           <div>
             <h2>Ganpati Pandal Atlas</h2>
-            <p>Curated from public sources — locations are approximate until a volunteer confirms the exact pin.</p>
+            <p>Coverage now spans Goa, Karnataka and Maharashtra. Curated from public sources — locations are approximate until a volunteer confirms the exact pin.</p>
           </div>
         </div>
 
@@ -177,14 +177,23 @@
           <p class="section-index">03 · Pandal directory</p>
           <div>
             <h2>Choose your next darshan</h2>
-            <p>Search the city, filter by verification status, then add stops to your route.</p>
+            <p>Choose a state and city, search nearby pandals, filter by verification status, then add stops to your route.</p>
           </div>
+        </div>
+
+        <div class="region-controls reveal">
+          <label class="region-select">State
+            <select id="stateFilter" aria-label="Filter by state"></select>
+          </label>
+          <label class="region-select">City
+            <select id="cityFilter" aria-label="Filter by city"></select>
+          </label>
         </div>
 
         <div class="directory-controls reveal">
           <label class="search-field">
             <span aria-hidden="true">⌕</span>
-            <input type="search" id="pandalSearch" placeholder="Search pandal or neighbourhood" autocomplete="off" />
+            <input type="search" id="pandalSearch" placeholder="Search pandal, city, state or neighbourhood" autocomplete="off" />
           </label>
           <div class="filter-pills" id="filterPills" aria-label="Filter pandals">
             <button class="filter-pill active" type="button" data-filter="all">All</button>
@@ -237,7 +246,7 @@
         <span class="brand-mark" aria-hidden="true"><img src="./assets/ganpati-mark.svg" alt="" /></span>
         <span><strong>Aamche Bappa</strong><small>Built for Mumbai’s Ganesh Utsav</small></span>
       </div>
-      <p>Community atlas · Public-source data · Approximate pins unless verified</p>
+      <p>Community atlas · Goa + Karnataka + Maharashtra · Public-source data · Approximate pins unless verified</p>
       <a href="#top">Back to top ↑</a>
     </div>
   </footer>
@@ -253,10 +262,20 @@
       </div>
       <p>Submit a location suggestion. This demo stores it only in your browser until a backend is connected.</p>
       <label>Pandal name<input required name="name" placeholder="e.g. Dadar Cha Ganraj" /></label>
-      <label>Neighbourhood<input required name="area" placeholder="e.g. Dadar West" /></label>
+      <label>Neighbourhood<input required name="area" placeholder="e.g. Panaji, Basavanagudi, Kasba Peth" /></label>
       <div class="form-grid">
-        <label>Latitude<input required name="lat" type="number" step="any" placeholder="19.0178" /></label>
-        <label>Longitude<input required name="lng" type="number" step="any" placeholder="72.8478" /></label>
+        <label>State
+          <select required name="state">
+            <option value="Goa">Goa</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Maharashtra" selected>Maharashtra</option>
+          </select>
+        </label>
+        <label>City<input required name="city" placeholder="e.g. Panaji, Bengaluru, Pune" /></label>
+      </div>
+      <div class="form-grid">
+        <label>Latitude<input required name="lat" type="number" step="any" placeholder="15.4909" /></label>
+        <label>Longitude<input required name="lng" type="number" step="any" placeholder="73.8278" /></label>
       </div>
       <label>Aarti / visiting note<input name="timing" placeholder="e.g. Aarti 8 AM · 8 PM" /></label>
       <div class="modal-actions">
@@ -269,6 +288,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="./regional-data.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
