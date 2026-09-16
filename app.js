@@ -79,8 +79,26 @@ const modakStops = [
   { id: "m5", name: "D. Damodar Mithaiwala", area: "Parel", lat: 19.0039, lng: 72.8422, note: "Festive sweet stop" }
 ];
 
+const regionalPandals = Array.isArray(window.regionalPandals) ? window.regionalPandals : [];
+const regionalModakStops = Array.isArray(window.regionalModakStops) ? window.regionalModakStops : [];
+
+function normalizePandal(pandal) {
+  if (pandal.state && pandal.city) return pandal;
+  return {
+    ...pandal,
+    state: pandal.state || "Maharashtra",
+    city: pandal.city || (String(pandal.area).includes("Navi Mumbai") ? "Navi Mumbai" : "Mumbai")
+  };
+}
+
+function allModakStops() {
+  return [...modakStops, ...regionalModakStops];
+}
+
 const state = {
   filter: "all",
+  selectedState: "all",
+  selectedCity: "all",
   query: "",
   userLocation: null,
   route: [],
@@ -101,7 +119,7 @@ function escapeHTML(value = "") {
 }
 
 function allPandals() {
-  return [...state.customPandals, ...pandals];
+  return [...state.customPandals, ...regionalPandals, ...pandals].map(normalizePandal);
 }
 
 function distanceKm(a, b) {
@@ -132,7 +150,7 @@ function initMap() {
     return;
   }
 
-  state.map = L.map("map", { scrollWheelZoom: false, zoomControl: false }).setView([19.02, 72.87], 11);
+  state.map = L.map("map", { scrollWheelZoom: false, zoomControl: false }).setView([16.5, 74.3], 6);
   L.control.zoom({ position: "bottomright" }).addTo(state.map);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -140,14 +158,15 @@ function initMap() {
   }).addTo(state.map);
 
   allPandals().forEach(addPandalMarker);
-  modakStops.forEach(addModakMarker);
-  mapStatus.textContent = `${allPandals().length} pandals · ${modakStops.length} modak stops`;
+  allModakStops().forEach(addModakMarker);
+  mapStatus.textContent = `${allPandals().length} pandals · Goa, Karnataka & Maharashtra`;
+  syncMapMarkers();
 }
 
 function addPandalMarker(pandal) {
   if (!state.map || state.markers.has(pandal.id)) return;
   const marker = L.marker([pandal.lat, pandal.lng], { icon: pinIcon("pandal") }).addTo(state.map);
-  marker.bindPopup(`<div class="popup-title">${escapeHTML(pandal.name)}</div><div class="popup-meta">${escapeHTML(pandal.area)}<br>${escapeHTML(pandal.timing)}</div>`);
+  marker.bindPopup(`<div class="popup-title">${escapeHTML(pandal.name)}</div><div class="popup-meta">${escapeHTML(pandal.area)} · ${escapeHTML(pandal.city)}, ${escapeHTML(pandal.state)}<br>${escapeHTML(pandal.timing)}</div>`);
   marker.on("click", () => highlightPandal(pandal.id, false));
   state.markers.set(pandal.id, marker);
 }
@@ -163,8 +182,10 @@ function visiblePandals() {
   const q = state.query.trim().toLowerCase();
   let items = allPandals().filter(p => {
     const matchesFilter = state.filter === "all" || p.status === state.filter;
-    const matchesQuery = !q || `${p.name} ${p.area} ${p.timing}`.toLowerCase().includes(q);
-    return matchesFilter && matchesQuery;
+    const matchesState = state.selectedState === "all" || p.state === state.selectedState;
+    const matchesCity = state.selectedCity === "all" || p.city === state.selectedCity;
+    const matchesQuery = !q || `${p.name} ${p.area} ${p.city} ${p.state} ${p.timing}`.toLowerCase().includes(q);
+    return matchesFilter && matchesState && matchesCity && matchesQuery;
   });
   if (state.userLocation) {
     items = items.map(p => ({ ...p, distance: distanceKm(state.userLocation, p) })).sort((a, b) => a.distance - b.distance);
@@ -185,7 +206,7 @@ function renderPandals() {
       <div class="pandal-rank">#${String(index + 1).padStart(2, "0")}</div>
       <div class="pandal-main">
         <h3>${escapeHTML(pandal.name)}</h3>
-        <div class="pandal-area">${escapeHTML(pandal.area)}</div>
+        <div class="pandal-area">${escapeHTML(pandal.area)} · ${escapeHTML(pandal.city)}, ${escapeHTML(pandal.state)}</div>
       </div>
       <div class="pandal-info">
         <span class="status-badge ${pandal.status}">${escapeHTML(statusLabel[pandal.status] || "Community added")}</span>
@@ -213,13 +234,13 @@ function renderRoute() {
   clear.disabled = items.length === 0;
   list.innerHTML = items.map((p, index) => `<li class="route-item">
     <span class="route-item-index">${index + 1}</span>
-    <div><strong>${escapeHTML(p.name)}</strong><span>${escapeHTML(p.area)}</span></div>
+    <div><strong>${escapeHTML(p.name)}</strong><span>${escapeHTML(p.area)} · ${escapeHTML(p.city)}, ${escapeHTML(p.state)}</span></div>
     <button type="button" data-remove-route="${p.id}" aria-label="Remove ${escapeHTML(p.name)} from route">×</button>
   </li>`).join("");
 }
 
 function renderModak() {
-  $("#modakList").innerHTML = modakStops.map(stop => `<article class="modak-card">
+  $("#modakList").innerHTML = allModakStops().map(stop => `<article class="modak-card">
     <div class="modak-icon" aria-hidden="true">◉</div>
     <div><h3>${escapeHTML(stop.name)}</h3><p>${escapeHTML(stop.area)} · ${escapeHTML(stop.note)}</p></div>
     <button type="button" data-modak-id="${stop.id}">View map</button>
@@ -237,7 +258,7 @@ function highlightPandal(id, scroll = true) {
 }
 
 function focusModak(id) {
-  const stop = modakStops.find(s => s.id === id);
+  const stop = allModakStops().find(s => s.id === id);
   if (!stop || !state.map) return;
   state.map.flyTo([stop.lat, stop.lng], 15, { duration: .8 });
   state.modakMarkers.get(id)?.openPopup();
@@ -315,6 +336,8 @@ function saveCustomPandal(form) {
     lat: Number(data.get("lat")),
     lng: Number(data.get("lng")),
     timing: data.get("timing")?.toString().trim() || "Timing not provided",
+    state: data.get("state")?.toString().trim() || "Maharashtra",
+    city: data.get("city")?.toString().trim() || data.get("area")?.toString().trim() || "Community",
     status: "check"
   };
   if (!pandal.name || !pandal.area || !Number.isFinite(pandal.lat) || !Number.isFinite(pandal.lng)) return false;
@@ -326,14 +349,83 @@ function saveCustomPandal(form) {
   return true;
 }
 
+function populateRegionFilters() {
+  const stateSelect = $("#stateFilter");
+  const citySelect = $("#cityFilter");
+  if (!stateSelect || !citySelect) return;
+
+  const states = [...new Set(allPandals().map(p => p.state).filter(Boolean))].sort();
+  stateSelect.innerHTML = '<option value="all">All 3 states</option>' +
+    states.map(value => `<option value="${escapeHTML(value)}">${escapeHTML(value)}</option>`).join("");
+
+  const refreshCities = () => {
+    const cities = [...new Set(allPandals()
+      .filter(p => state.selectedState === "all" || p.state === state.selectedState)
+      .map(p => p.city)
+      .filter(Boolean))].sort();
+    citySelect.innerHTML = '<option value="all">All cities</option>' +
+      cities.map(value => `<option value="${escapeHTML(value)}">${escapeHTML(value)}</option>`).join("");
+    if (!cities.includes(state.selectedCity)) state.selectedCity = "all";
+    citySelect.value = state.selectedCity;
+  };
+
+  stateSelect.value = state.selectedState;
+  refreshCities();
+
+  stateSelect.addEventListener("change", event => {
+    state.selectedState = event.target.value;
+    state.selectedCity = "all";
+    refreshCities();
+    renderPandals();
+    syncMapMarkers(true);
+  });
+
+  citySelect.addEventListener("change", event => {
+    state.selectedCity = event.target.value;
+    renderPandals();
+    syncMapMarkers(true);
+  });
+}
+
+function syncMapMarkers(fit = false) {
+  if (!state.map) return;
+  const visible = visiblePandals();
+  const ids = new Set(visible.map(p => String(p.id)));
+
+  state.markers.forEach((marker, id) => {
+    const shouldShow = ids.has(String(id));
+    const onMap = state.map.hasLayer(marker);
+    if (shouldShow && !onMap) marker.addTo(state.map);
+    if (!shouldShow && onMap) marker.remove();
+  });
+
+  if (fit && visible.length) {
+    const bounds = L.latLngBounds(visible.map(p => [p.lat, p.lng]));
+    state.map.fitBounds(bounds.pad(0.16), { maxZoom: 12 });
+  }
+
+  const label = state.selectedCity !== "all"
+    ? state.selectedCity
+    : state.selectedState !== "all"
+      ? state.selectedState
+      : "Goa, Karnataka & Maharashtra";
+  const mapStatus = $("#mapStatus");
+  if (mapStatus) mapStatus.textContent = `${visible.length} pandals · ${label}`;
+}
+
 function bindEvents() {
-  $("#pandalSearch").addEventListener("input", event => { state.query = event.target.value; renderPandals(); });
+  $("#pandalSearch").addEventListener("input", event => {
+    state.query = event.target.value;
+    renderPandals();
+    syncMapMarkers();
+  });
   $("#filterPills").addEventListener("click", event => {
     const button = event.target.closest("[data-filter]");
     if (!button) return;
     state.filter = button.dataset.filter;
-    $$("[data-filter]", $("#filterPills")).forEach(el => el.classList.toggle("active", el === button));
+    $("[data-filter]", $("#filterPills")).forEach(el => el.classList.toggle("active", el === button));
     renderPandals();
+    syncMapMarkers();
   });
   $("#pandalGrid").addEventListener("click", event => {
     const mapButton = event.target.closest("[data-map-id]");
@@ -356,7 +448,7 @@ function bindEvents() {
   });
   $("#focusModakButton").addEventListener("click", () => {
     if (state.map) {
-      const bounds = L.latLngBounds(modakStops.map(s => [s.lat, s.lng]));
+      const bounds = L.latLngBounds(allModakStops().map(s => [s.lat, s.lng]));
       state.map.fitBounds(bounds.pad(.35));
       $("#atlas")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -411,6 +503,7 @@ function initReveal() {
 
 function init() {
   loadCustomPandals();
+  populateRegionFilters();
   renderPandals();
   renderRoute();
   renderModak();
