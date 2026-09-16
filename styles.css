@@ -27,7 +27,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 body.modal-open { overflow: hidden; }
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
@@ -168,6 +168,10 @@ img { max-width: 100%; display: block; }
 .route-actions { margin-top: auto; padding-top: 22px; display: flex; gap: 14px; align-items: center; }
 .route-actions .button { flex: 1; }
 
+.region-controls { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.region-select { min-width: 190px; display: grid; gap: 7px; font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.region-select select { min-height: 48px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.42); color: var(--ink); padding: 0 40px 0 14px; outline: 0; cursor: pointer; }
+.region-select select:focus { border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(74,14,25,.08); }
 .directory-controls { display: grid; grid-template-columns: minmax(280px, 1fr) auto; gap: 18px; align-items: center; }
 .search-field { height: 54px; border-bottom: 1px solid var(--ink); display: flex; align-items: center; gap: 10px; }
 .search-field input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 16px; color: var(--ink); }
@@ -228,8 +232,8 @@ img { max-width: 100%; display: block; }
 .modal-head h2 { margin: 7px 0 0; font-size: 34px; letter-spacing: -.045em; }
 .modal-card > p { color: var(--muted); line-height: 1.6; font-size: 13px; }
 .modal-card label { display: grid; gap: 7px; margin-top: 16px; font-size: 11px; font-weight: 800; }
-.modal-card input { width: 100%; border: 1px solid var(--line); background: white; border-radius: 12px; padding: 12px 13px; outline: none; }
-.modal-card input:focus { border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(74,14,25,.08); }
+.modal-card input, .modal-card select { width: 100%; border: 1px solid var(--line); background: white; border-radius: 12px; padding: 12px 13px; outline: none; }
+.modal-card input:focus, .modal-card select:focus { border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(74,14,25,.08); }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 130px); z-index: 3000; background: #1e1511; color: white; border-radius: 999px; padding: 12px 18px; font-size: 12px; font-weight: 700; box-shadow: var(--shadow); transition: transform .25s ease; }
@@ -253,6 +257,8 @@ img { max-width: 100%; display: block; }
   .atlas-layout { grid-template-columns: 1fr; }
   .route-panel { min-height: auto; }
   .route-actions { margin-top: 30px; }
+  .region-controls { display: grid; grid-template-columns: 1fr 1fr; }
+  .region-select { min-width: 0; }
   .directory-controls { grid-template-columns: 1fr; }
   .filter-pills { justify-content: flex-start; }
   .pandal-card { grid-template-columns: 50px 1fr auto; }
@@ -293,6 +299,7 @@ img { max-width: 100%; display: block; }
   .small-action { flex: 1; }
   .modak-card { grid-template-columns: 42px 1fr; }
   .modak-card button { grid-column: 2; justify-self: start; }
+  .region-controls { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
   .modal-actions { flex-direction: column; }
   .modal-actions .button { width: 100%; }
