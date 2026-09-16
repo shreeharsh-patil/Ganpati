@@ -28,7 +28,7 @@ body {
 }
 body.modal-open { overflow: hidden; }
 button, input, select { font: inherit; }
-button, a { -webkit-tap-highlight-color: transparent; }
+button, a, select { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 
@@ -108,12 +108,12 @@ img { max-width: 100%; display: block; }
 .art-label-top { right: -6px; top: 22%; }
 .art-label-bottom { left: -10px; bottom: 18%; }
 .ticker { height: 65px; display: flex; align-items: center; overflow: hidden; border-top: 1px solid rgba(255,255,255,.1); background: rgba(30,0,6,.22); }
-.ticker-track { display: flex; align-items: center; width: max-content; animation: ticker 28s linear infinite; white-space: nowrap; color: #f4c27d; }
+.ticker-track { display: flex; align-items: center; width: max-content; animation: ticker 28s linear infinite; white-space: nowrap; color: #f4c27d; will-change: transform; transform: translate3d(0,0,0); }
 .ticker span { font-family: Georgia, serif; font-style: italic; font-size: 18px; margin: 0 25px; }
 .ticker i { font-style: normal; font-size: 7px; opacity: .55; }
-@keyframes ticker { to { transform: translateX(-50%); } }
+@keyframes ticker { to { transform: translate3d(-50%,0,0); } }
 
-.section { padding: 112px 0; }
+.section { padding: 112px 0; scroll-margin-top: 82px; }
 .section-cream { background: var(--cream); }
 .section-heading { display: grid; grid-template-columns: 220px 1fr; gap: 44px; align-items: start; margin-bottom: 48px; }
 .section-heading.light { color: #fff8ed; }
@@ -182,8 +182,8 @@ img { max-width: 100%; display: block; }
 .directory-meta { display: flex; justify-content: space-between; align-items: center; margin: 28px 0 17px; color: var(--muted); font-size: 12px; }
 .directory-meta p { margin: 0; }
 .directory-meta strong { color: var(--ink); }
-.pandal-grid { border-top: 1px solid var(--line); }
-.pandal-card { display: grid; grid-template-columns: 70px 1.3fr 1fr auto; gap: 22px; align-items: center; padding: 23px 0; border-bottom: 1px solid var(--line); transition: background .18s ease; }
+.pandal-grid { border-top: 1px solid var(--line); contain: layout style; }
+.pandal-card { display: grid; grid-template-columns: 70px 1.3fr 1fr auto; gap: 22px; align-items: center; padding: 23px 0; border-bottom: 1px solid var(--line); transition: background .18s ease; content-visibility: auto; contain-intrinsic-size: 104px; contain: layout paint style; }
 .pandal-card:hover { background: rgba(255,255,255,.26); }
 .pandal-rank { font-family: Georgia, serif; font-style: italic; font-size: 16px; color: var(--red); }
 .pandal-main h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -.035em; }
@@ -239,12 +239,14 @@ img { max-width: 100%; display: block; }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 130px); z-index: 3000; background: #1e1511; color: white; border-radius: 999px; padding: 12px 18px; font-size: 12px; font-weight: 700; box-shadow: var(--shadow); transition: transform .25s ease; }
 .toast.show { transform: translate(-50%, 0); }
 
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
-.reveal.visible { opacity: 1; transform: none; }
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s cubic-bezier(.2,.7,.2,1); will-change: opacity, transform; }
+.reveal.visible { opacity: 1; transform: none; will-change: auto; }
 
 @media (max-width: 980px) {
   :root { --shell: min(100% - 30px, 760px); }
   .desktop-nav, .nav-actions .button { display: none; }
+  .site-header { backdrop-filter: none; background: var(--maroon); }
+  .hero-art > img { filter: drop-shadow(0 20px 16px rgba(21,0,4,.22)); }
   .menu-button { display: block; }
   .hero-grid { grid-template-columns: 1fr; gap: 22px; padding-top: 75px; }
   .hero-art { min-height: 440px; }
@@ -290,7 +292,7 @@ img { max-width: 100%; display: block; }
   .atlas-toolbar { align-items: flex-start; flex-direction: column; }
   .toolbar-left { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
   .toolbar-left .button { width: 100%; }
-  .map-wrap, #map { min-height: 500px; height: 500px; }
+  .map-wrap, #map { min-height: 470px; height: 470px; }
   .route-panel { padding: 20px; }
   .directory-meta { align-items: flex-start; }
   .pandal-card { grid-template-columns: 38px 1fr; gap: 13px; padding-block: 20px; }
