@@ -3,25 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#4a0e19" />
-  <meta name="description" content="Aamche Bappa — a Ganpati pandal atlas for Goa, Karnataka and Maharashtra. Discover pandals, check aarti timings, find modak stops and plan your darshan route." />
+  <meta name="theme-color" content="#f4efe5" />
+  <meta name="description" content="Aamche Bappa — a mobile-first Ganpati pandal atlas for Goa, Karnataka and Maharashtra." />
   <meta property="og:title" content="Aamche Bappa | Ganpati Pandal Atlas" />
-  <meta property="og:description" content="Find every pandal. Miss no aarti." />
+  <meta property="og:description" content="Plan your Ganpati journey, discover pandals, build routes and save your darshan plan." />
   <meta property="og:type" content="website" />
   <title>Aamche Bappa | Ganpati Pandal Atlas</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynbRtMZt1A7eQZtVLA9PZ1g6a8wM=" crossorigin="" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./reference.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="top">
     <div class="shell nav-shell">
-      <a class="brand" href="#top" aria-label="Aamche Bappa home">
+      <a class="brand" href="#journey" aria-label="Aamche Bappa home">
         <span class="brand-mark" aria-hidden="true">
           <img src="./assets/ganpati-mark.svg" alt="" width="28" height="28" decoding="async" />
         </span>
@@ -32,16 +33,14 @@
       </a>
 
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="#atlas">Map</a>
-        <a href="#pandals">Pandals</a>
-        <a href="#modak">Modak stops</a>
-        <a href="#how-it-works">How it works</a>
+        <a href="#journey">Journey</a>
+        <a href="#routes">Routes</a>
+        <a href="#atlas">Find</a>
+        <a href="#saved">Saved</a>
       </nav>
 
       <div class="nav-actions">
-        <button class="button button-light compact" type="button" data-action="locate">
-          <span aria-hidden="true">⌖</span> Find near me
-        </button>
+        <button class="button button-light compact" type="button" data-action="locate">⌖ Use my location</button>
         <button class="menu-button" id="menuButton" type="button" aria-controls="mobileNav" aria-expanded="false" aria-label="Open navigation">
           <span></span><span></span>
         </button>
@@ -49,98 +48,148 @@
     </div>
 
     <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
-      <a href="#atlas">Map</a>
-      <a href="#pandals">Pandals</a>
-      <a href="#modak">Modak stops</a>
-      <a href="#how-it-works">How it works</a>
+      <a href="#journey">Journey</a>
+      <a href="#routes">Routes</a>
+      <a href="#atlas">Find</a>
+      <a href="#saved">Saved</a>
     </nav>
   </header>
 
   <main id="main">
-    <section class="hero section-dark">
-      <div class="hero-glow hero-glow-one"></div>
-      <div class="hero-glow hero-glow-two"></div>
-      <div class="shell hero-grid">
+    <section class="hero" id="journey">
+      <div class="shell reference-hero">
         <div class="hero-copy reveal">
-          <p class="eyebrow devanagari">गणपती बाप्पा मोरया</p>
-          <span class="year-pill">Goa · Karnataka · Maharashtra · 2026</span>
-          <h1>Find every pandal.<br /><em>Miss no aarti.</em></h1>
-          <p class="hero-lede">Explore trusted Ganpati locations across Goa, Karnataka and Maharashtra, compare visiting times, and plan a darshan route that works from your city.</p>
-          <div class="hero-actions">
-            <a class="button button-saffron" href="#atlas">Explore the map <span aria-hidden="true">↗</span></a>
-            <button class="button button-ghost" type="button" data-action="locate">Pandals near me</button>
+          <p class="eyebrow">Ganesh Chaturthi · 2026</p>
+          <h1>Plan your<br /><em>Ganpati journey.</em></h1>
+          <p class="hero-lede">Discover pandals across Goa, Karnataka and Maharashtra, build a darshan route, check timings and keep every festival stop in one place.</p>
+
+          <div class="festival-meta" aria-label="Festival overview">
+            <div><span>Festival</span><strong>10 days</strong></div>
+            <div><span>Coverage</span><strong>3 states</strong></div>
+            <div><span>Experience</span><strong>Darshan first</strong></div>
           </div>
-          <blockquote class="shloka devanagari">वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।<br />निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥</blockquote>
+
+          <div class="hero-actions">
+            <a class="button button-saffron" href="#routes">Explore routes</a>
+            <button class="button button-ghost" type="button" data-action="locate">Find near me</button>
+          </div>
         </div>
 
         <div class="hero-art reveal" aria-hidden="true">
-          <div class="hero-arch arch-back"></div>
-          <div class="hero-arch arch-front"></div>
           <img src="./assets/hero-ganpati.svg" alt="" width="520" height="620" fetchpriority="high" decoding="async" />
-          <div class="art-label art-label-top">मुंबईचा उत्सव</div>
-          <div class="art-label art-label-bottom">10 days · countless memories</div>
-        </div>
-      </div>
-
-      <div class="ticker" aria-hidden="true">
-        <div class="ticker-track">
-          <span>Darshan</span><i>◆</i><span>Aarti</span><i>◆</i><span>Modak</span><i>◆</i><span>Routes</span><i>◆</i><span>Ganpati Bappa Morya</span><i>◆</i>
-          <span>Darshan</span><i>◆</i><span>Aarti</span><i>◆</i><span>Modak</span><i>◆</i><span>Routes</span><i>◆</i><span>Ganpati Bappa Morya</span><i>◆</i>
+          <div class="art-label art-label-top devanagari">गणपती बाप्पा मोरया</div>
+          <div class="art-label art-label-bottom">Chavath · Darshan · Aarti</div>
         </div>
       </div>
     </section>
 
-    <section class="section section-cream" id="how-it-works">
+    <section class="reference-strip" aria-label="Quick guide">
+      <div class="shell">
+        <article><span>01 · Journey</span><strong>Build your own darshan plan</strong></article>
+        <article><span>02 · Routes</span><strong>Start with a curated festival route</strong></article>
+        <article><span>03 · Find</span><strong>Explore pandals around you</strong></article>
+      </div>
+    </section>
+
+    <section class="section routes-section" id="routes">
       <div class="shell">
         <div class="section-heading reveal">
-          <p class="section-index">01 · Plan your darshan</p>
+          <p class="section-index">Curated darshan</p>
           <div>
-            <h2>How it works</h2>
-            <p>Discover nearby pandals, plan your route, and time every visit with confidence.</p>
+            <h2>Routes made for the day.</h2>
+            <p>Pick a route based on the time you have, then add or remove pandals to make it yours.</p>
           </div>
         </div>
 
-        <div class="steps-grid">
-          <article class="step-card reveal">
-            <div class="step-number">1</div>
-            <div class="step-icon" aria-hidden="true">◎</div>
-            <h3>Live Check Nearby Pandals</h3>
-            <p>Discover Ganpati pandals around your location. Check crowd notes, verified locations and festival updates before stepping out.</p>
+        <div class="route-grid">
+          <article class="route-card featured reveal">
+            <div class="route-card-top">
+              <p class="route-kicker">Mumbai · 4 stops</p>
+              <span class="route-badge">Featured</span>
+            </div>
+            <h3>Lalbaug classics</h3>
+            <p>A compact route through Lalbaug and Parel for some of Mumbai's best-known Ganpati mandals.</p>
+            <div class="route-path"><span>Approx. 3–4 hours</span><a href="#atlas">View route →</a></div>
           </article>
-          <article class="step-card reveal">
-            <div class="step-number">2</div>
-            <div class="step-icon" aria-hidden="true">↗</div>
-            <h3>Plan Your Darshan Route</h3>
-            <p>Build an efficient route for multiple pandals in one trip and open turn-by-turn directions when you are ready to leave.</p>
+
+          <article class="route-card reveal">
+            <div class="route-card-top"><p class="route-kicker">Goa · 4 stops</p></div>
+            <h3>Panaji evening</h3>
+            <p>A slower city route designed around an evening darshan window and nearby festival stops.</p>
+            <div class="route-path"><span>Approx. 2–3 hours</span><a href="#atlas">View route →</a></div>
           </article>
-          <article class="step-card reveal">
-            <div class="step-number">3</div>
-            <div class="step-icon" aria-hidden="true">◷</div>
-            <h3>Track Aarti Timings</h3>
-            <p>Keep aarti and visiting timings together so you can plan around busy hours and avoid missing the rituals you care about.</p>
+
+          <article class="route-card reveal">
+            <div class="route-card-top"><p class="route-kicker">Bengaluru · 5 stops</p></div>
+            <h3>Basavanagudi trail</h3>
+            <p>Explore a traditional Bengaluru circuit with time left for prasada and a relaxed walk between stops.</p>
+            <div class="route-path"><span>Approx. 3 hours</span><a href="#atlas">View route →</a></div>
+          </article>
+
+          <article class="route-card reveal">
+            <div class="route-card-top"><p class="route-kicker">Pune · 5 stops</p></div>
+            <h3>Manache Ganpati</h3>
+            <p>A central Pune route inspired by the city's celebrated Ganesh Utsav traditions and walkable core.</p>
+            <div class="route-path"><span>Approx. 4 hours</span><a href="#atlas">View route →</a></div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section builder-section" id="builder">
+      <div class="shell builder-grid">
+        <div class="builder-intro reveal">
+          <p class="section-index">Build your journey</p>
+          <h2>Make the route yours.</h2>
+          <p>Add pandals from the directory, keep the order that works for you and open the complete walking route when you are ready.</p>
+          <a class="button button-ghost-dark" href="#pandals">Choose pandals</a>
+        </div>
+
+        <aside class="route-panel reveal" aria-label="Darshan route planner">
+          <div class="route-panel-head">
+            <div>
+              <span class="tiny-label">Your journey</span>
+              <h3>Darshan plan</h3>
+            </div>
+            <span class="route-count" id="routeCount">0</span>
+          </div>
+          <p class="route-empty" id="routeEmpty">Nothing saved yet. Add pandals from the Find section to build your route.</p>
+          <ol class="route-list" id="routeList"></ol>
+          <div class="route-actions">
+            <button class="button button-saffron" id="openRouteButton" type="button" disabled>Open in Maps</button>
+            <button class="text-button" id="clearRouteButton" type="button" disabled>Clear route</button>
+          </div>
+        </aside>
       </div>
     </section>
 
     <section class="section atlas-section" id="atlas">
       <div class="shell">
         <div class="section-heading light reveal">
-          <p class="section-index">02 · Explore Western India</p>
+          <p class="section-index">Find pandals</p>
           <div>
-            <h2>Ganpati Pandal Atlas</h2>
-            <p>Coverage now spans Goa, Karnataka and Maharashtra. Curated from public sources — locations are approximate until a volunteer confirms the exact pin.</p>
+            <h2>Explore the atlas.</h2>
+            <p>Use your location or choose a state and city. Pins are approximate until a location is community verified.</p>
           </div>
+        </div>
+
+        <div class="region-controls map-filters reveal">
+          <label class="region-select">State
+            <select id="stateFilter" aria-label="Filter by state"></select>
+          </label>
+          <label class="region-select">City
+            <select id="cityFilter" aria-label="Filter by city"></select>
+          </label>
         </div>
 
         <div class="atlas-toolbar reveal">
           <div class="toolbar-left">
             <button class="button button-saffron compact" type="button" id="addPandalButton">＋ Add a pandal</button>
-            <button class="button button-outline compact" type="button" data-action="locate">⌖ Allow location</button>
+            <button class="button button-outline compact" type="button" data-action="locate">⌖ Use my location</button>
           </div>
           <div class="map-legend" aria-label="Map legend">
             <span><i class="legend-dot pandal"></i> Pandals</span>
-            <span><i class="legend-dot modak"></i> Modak stops</span>
+            <span><i class="legend-dot modak"></i> Modak</span>
             <span><i class="legend-dot user"></i> You</span>
           </div>
         </div>
@@ -151,22 +200,6 @@
             <div class="map-status" id="mapStatus" aria-live="polite">Loading the interactive map…</div>
             <button class="map-locate" type="button" data-action="locate" aria-label="Use my location">⌖</button>
           </div>
-
-          <aside class="route-panel" aria-label="Darshan route planner">
-            <div class="route-panel-head">
-              <div>
-                <span class="tiny-label">Your route</span>
-                <h3>Darshan plan</h3>
-              </div>
-              <span class="route-count" id="routeCount">0</span>
-            </div>
-            <p class="route-empty" id="routeEmpty">Add pandals from the list to build a route.</p>
-            <ol class="route-list" id="routeList"></ol>
-            <div class="route-actions">
-              <button class="button button-saffron" id="openRouteButton" type="button" disabled>Open route</button>
-              <button class="text-button" id="clearRouteButton" type="button" disabled>Clear</button>
-            </div>
-          </aside>
         </div>
       </div>
     </section>
@@ -174,32 +207,23 @@
     <section class="section section-cream" id="pandals">
       <div class="shell">
         <div class="section-heading reveal">
-          <p class="section-index">03 · Pandal directory</p>
+          <p class="section-index">Pandal directory</p>
           <div>
-            <h2>Choose your next darshan</h2>
-            <p>Choose a state and city, search nearby pandals, filter by verification status, then add stops to your route.</p>
+            <h2>Find your next darshan.</h2>
+            <p>Search the directory, check the latest status and add any stop directly to your route.</p>
           </div>
-        </div>
-
-        <div class="region-controls reveal">
-          <label class="region-select">State
-            <select id="stateFilter" aria-label="Filter by state"></select>
-          </label>
-          <label class="region-select">City
-            <select id="cityFilter" aria-label="Filter by city"></select>
-          </label>
         </div>
 
         <div class="directory-controls reveal">
           <label class="search-field">
             <span aria-hidden="true">⌕</span>
-            <input type="search" id="pandalSearch" placeholder="Search pandal, city, state or neighbourhood" autocomplete="off" />
+            <input type="search" id="pandalSearch" placeholder="Search pandal, city or neighbourhood" autocomplete="off" />
           </label>
           <div class="filter-pills" id="filterPills" aria-label="Filter pandals">
             <button class="filter-pill active" type="button" data-filter="all">All</button>
-            <button class="filter-pill" type="button" data-filter="confirmed">Confirmed 2026</button>
+            <button class="filter-pill" type="button" data-filter="confirmed">Confirmed</button>
             <button class="filter-pill" type="button" data-filter="check">Needs checking</button>
-            <button class="filter-pill" type="button" data-filter="historic">Last seen 2023</button>
+            <button class="filter-pill" type="button" data-filter="historic">Historic</button>
           </div>
         </div>
 
@@ -211,31 +235,55 @@
         <div class="pandal-grid" id="pandalGrid"></div>
         <div class="empty-state" id="emptyState" hidden>
           <strong>No pandals match that search.</strong>
-          <span>Try another neighbourhood or clear the filters.</span>
+          <span>Try another place or clear the filters.</span>
         </div>
       </div>
     </section>
 
-    <section class="section modak-section" id="modak">
-      <div class="shell modak-grid">
-        <div class="modak-copy reveal">
-          <p class="section-index">04 · Sweet detours</p>
-          <h2>Make room for a modak.</h2>
-          <p>Festival routes are better with a sweet stop between pandals. These markers are kept separate from darshan pins so the map stays easy to read.</p>
-          <button class="button button-dark" id="focusModakButton" type="button">Show modak stops on map</button>
+    <section class="section guide-section" id="guide">
+      <div class="shell guide-grid">
+        <div class="guide-copy reveal">
+          <p class="section-index">Ganpati guide</p>
+          <h2>Darshan without the rush.</h2>
+          <p>Keep the day flexible. Festival traffic, mandal queues and aarti timings can change quickly.</p>
+          <div class="guide-tips">
+            <div class="guide-tip"><strong>Morning</strong><span>Start early for quieter queues and easier travel between stops.</span></div>
+            <div class="guide-tip"><strong>Aarti</strong><span>Check the mandal's latest notice before planning around a specific time.</span></div>
+            <div class="guide-tip"><strong>Travel</strong><span>Prefer walking and public transport around dense festival areas.</span></div>
+          </div>
         </div>
-        <div class="modak-list" id="modakList"></div>
+
+        <section class="modak-section" id="modak">
+          <div class="modak-grid">
+            <div class="modak-copy reveal">
+              <p class="section-index">Sweet detours</p>
+              <h2>Make room for a modak.</h2>
+              <p>Keep a few classic sweet stops nearby without mixing them into your darshan route.</p>
+              <button class="button button-dark" id="focusModakButton" type="button">Show modak stops</button>
+            </div>
+            <div class="modak-list" id="modakList"></div>
+          </div>
+        </section>
       </div>
     </section>
 
-    <section class="section section-dark route-cta">
-      <div class="shell route-cta-grid reveal">
-        <div>
-          <p class="eyebrow">Before you head out</p>
-          <h2>Keep the route flexible.</h2>
+    <section class="section saved-section" id="saved">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <p class="section-index">Saved</p>
+          <div>
+            <h2>Keep your plan close.</h2>
+            <p>Your route and community-added pandals stay on this device, ready for the next darshan.</p>
+          </div>
         </div>
-        <p>Crowds, diversions and mandal timings can change quickly during Ganesh Utsav. Treat this atlas as a planning aid and follow local police and mandal instructions on the ground.</p>
-        <a class="button button-saffron" href="#atlas">Build my route</a>
+        <div class="saved-card reveal">
+          <div>
+            <h3>Your festival plan</h3>
+            <p>Build a route above, then open it whenever you're ready to leave.</p>
+            <div class="saved-summary">Journey · Routes · Find · Saved</div>
+          </div>
+          <a class="button button-saffron" href="#builder">View journey</a>
+        </div>
       </div>
     </section>
   </main>
@@ -244,12 +292,19 @@
     <div class="shell footer-grid">
       <div class="brand footer-brand">
         <span class="brand-mark" aria-hidden="true"><img src="./assets/ganpati-mark.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
-        <span><strong>Aamche Bappa</strong><small>Goa · Karnataka · Maharashtra</small></span>
+        <span><strong>Aamche Bappa</strong><small>Ganpati Pandal Atlas</small></span>
       </div>
-      <p>Community atlas · Goa + Karnataka + Maharashtra · Public-source data · Approximate pins unless verified</p>
+      <p>Community atlas · Goa + Karnataka + Maharashtra · Approximate pins unless verified</p>
       <a href="#top">Back to top ↑</a>
     </div>
   </footer>
+
+  <nav class="bottom-nav" aria-label="App navigation">
+    <a class="active" href="#journey">Journey</a>
+    <a href="#routes">Routes</a>
+    <a href="#atlas">Find</a>
+    <a href="#saved">Saved</a>
+  </nav>
 
   <dialog class="modal" id="addPandalDialog">
     <form method="dialog" class="modal-card" id="addPandalForm">
@@ -260,7 +315,7 @@
         </div>
         <button class="icon-button" value="cancel" aria-label="Close dialog" type="submit">×</button>
       </div>
-      <p>Submit a location suggestion. This demo stores it only in your browser until a backend is connected.</p>
+      <p>Submit a location suggestion. It is stored on this device until a backend is connected.</p>
       <label>Pandal name<input required name="name" placeholder="e.g. Dadar Cha Ganraj" /></label>
       <label>Neighbourhood<input required name="area" placeholder="e.g. Panaji, Basavanagudi, Kasba Peth" /></label>
       <div class="form-grid">
