@@ -355,6 +355,13 @@ html {
   will-change: transform;
 }
 
+/* Disallow zoom-in controls */
+.leaflet-control-zoom,
+.leaflet-control-zoom-in {
+  display: none !important;
+  pointer-events: none !important;
+}
+
 /* Pandal Marker Host - identical dimensions to Modak Marker */
 .atlas-map-marker-host {
   position: relative;
@@ -379,7 +386,6 @@ html {
 
 /* Marker Body Circle - exactly 30px x 30px matching modak-map-marker-badge */
 .atlas-map-marker-body {
-  position: relative;
   width: 30px;
   height: 30px;
   border-radius: 50%;

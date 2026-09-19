@@ -482,13 +482,17 @@
         attributionControl: true,
         center: [16.8, 74.8],
         fadeAnimation: true,
-        markerZoomAnimation: true,
+        markerZoomAnimation: false,
         zoomAnimation: true,
         wheelDebounceTime: 80,
         wheelPxPerZoomLevel: 100,
-        scrollWheelZoom: true,
+        scrollWheelZoom: false, // Disallow zoom in on mouse wheel
+        doubleClickZoom: false, // Disallow zoom in on double click
+        touchZoom: false,       // Disallow zoom in on touch gestures
+        boxZoom: false,         // Disallow box zoom
+        keyboard: false,        // Disallow keyboard zoom
         zoom: 7,
-        zoomControl: true,
+        zoomControl: false,     // Disallow zoom in controls
         preferCanvas: true
       });
 
@@ -525,6 +529,11 @@
         paddingTopLeft: [50, 50]
       });
 
+      // Strictly lock maxZoom so zooming in is completely disallowed
+      const overviewZoom = map.getZoom();
+      map.setMaxZoom(overviewZoom);
+      map.zoomIn = function() { return this; }; // Guard against programmatic zoom in
+
       // Settle visible markers for the fitted bounds
       scheduleVisibleMarkersUpdate();
 
@@ -559,7 +568,7 @@
     }
   }
 
-  // Smooth camera fly-to pandal
+  // Smooth camera pan to pandal (preserving zoom level without zooming in)
   function selectPandal(pandal) {
     if (!map) return;
     const mapSection = document.getElementById('pandal-map');
@@ -570,7 +579,7 @@
     if (pandalLayerGroup && !pandalLayerGroup.hasLayer(marker)) {
       pandalLayerGroup.addLayer(marker);
     }
-    map.flyTo([pandal.lat, pandal.lng], Math.max(map.getZoom(), 15), {
+    map.flyTo([pandal.lat, pandal.lng], map.getZoom(), {
       duration: 0.75,
       easeLinearity: 0.25
     });
@@ -581,7 +590,7 @@
     }, 450);
   }
 
-  // Smooth camera fly-to modak stop
+  // Smooth camera pan to modak stop (preserving zoom level without zooming in)
   function selectModakStop(modakName) {
     if (!map) return;
     const stop = allModaks.find(m => m.name === modakName);
@@ -595,7 +604,7 @@
     if (modakLayerGroup && !modakLayerGroup.hasLayer(marker)) {
       modakLayerGroup.addLayer(marker);
     }
-    map.flyTo([stop.lat, stop.lng], Math.max(map.getZoom(), 16), {
+    map.flyTo([stop.lat, stop.lng], map.getZoom(), {
       duration: 0.75,
       easeLinearity: 0.25
     });
@@ -903,7 +912,8 @@
       map.flyToBounds(STATE_CONFIG[state].bounds, {
         duration: 0.95,
         easeLinearity: 0.25,
-        padding: [25, 25]
+        padding: [25, 25],
+        maxZoom: map.getZoom()
       });
     }
   }
@@ -916,10 +926,10 @@
     if (map) {
       if (regionId === 'all') {
         const cfg = STATE_CONFIG[selectedState];
-        if (cfg) map.flyToBounds(cfg.bounds, { duration: 0.8, padding: [25, 25] });
+        if (cfg) map.flyToBounds(cfg.bounds, { duration: 0.8, padding: [25, 25], maxZoom: map.getZoom() });
       } else if (REGION_CENTERS[regionId]) {
         const target = REGION_CENTERS[regionId];
-        map.flyTo(target.center, target.zoom, { duration: 0.85, easeLinearity: 0.25 });
+        map.flyTo(target.center, map.getZoom(), { duration: 0.85, easeLinearity: 0.25 });
       }
     }
   }
@@ -1102,7 +1112,7 @@
             userMarker.setLatLng([userLocation.lat, userLocation.lng]);
           }
 
-          map.flyTo([userLocation.lat, userLocation.lng], 14, {
+          map.flyTo([userLocation.lat, userLocation.lng], map.getZoom(), {
             duration: 0.8,
             easeLinearity: 0.25
           });
