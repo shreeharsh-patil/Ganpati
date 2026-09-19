@@ -1,0 +1,125 @@
+/* vietnamese */
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(./fonts/public-sans-2090ae7a.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(./fonts/public-sans-da9f89d3.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(./fonts/public-sans-f631476b.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Public Sans Fallback';
+  src: local("Arial");
+  ascent-override: 90.59%;
+  descent-override: 21.46%;
+  line-gap-override: 0.00%;
+  size-adjust: 104.87%;
+}
+
+.__font_public_sans_1a1pmwd { font-family: 'Public Sans', 'Public Sans Fallback'; font-style: normal; }
+
+.__variable_public_sans_1a1pmwd { --font-public-sans: 'Public Sans', 'Public Sans Fallback'; }
+
+/* vietnamese */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-6116525b.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-9101bee3.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-2064f7d0.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque Fallback';
+  src: local("Arial");
+  ascent-override: 88.21%;
+  descent-override: 25.61%;
+  line-gap-override: 0.00%;
+  size-adjust: 105.43%;
+}
+
+.__font_bricolage_grotesque_1nu6jmj { font-family: 'Bricolage Grotesque', 'Bricolage Grotesque Fallback'; font-style: normal; }
+
+.__variable_bricolage_grotesque_1nu6jmj { --font-bricolage-grotesque: 'Bricolage Grotesque', 'Bricolage Grotesque Fallback'; }
+
+/* devanagari */
+@font-face {
+  font-family: 'Tiro Devanagari Marathi';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/tiro-devanagari-marathi-f6f70f1e.woff2) format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Tiro Devanagari Marathi';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/tiro-devanagari-marathi-327d9e1f.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Tiro Devanagari Marathi';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/tiro-devanagari-marathi-d779460a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Tiro Devanagari Marathi Fallback';
+  src: local("Times New Roman");
+  ascent-override: 67.12%;
+  descent-override: 21.78%;
+  line-gap-override: 29.34%;
+  size-adjust: 112.49%;
+}
+
+.__font_tiro_devanagari_marathi_174tq1a { font-family: 'Tiro Devanagari Marathi', 'Tiro Devanagari Marathi Fallback'; font-weight: 400; font-style: normal; }
+
+.__variable_tiro_devanagari_marathi_174tq1a { --font-tiro-devanagari: 'Tiro Devanagari Marathi', 'Tiro Devanagari Marathi Fallback'; }
